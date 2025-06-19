@@ -1,6 +1,6 @@
 import streamlit as st
 
-# --- DARK MODE + TOOLTIP PATCH STYLING ---
+# Styling
 st.markdown("""
     <style>
     .stApp {
@@ -9,12 +9,12 @@ st.markdown("""
         font-family: 'Segoe UI', sans-serif;
     }
     h1, h2, h3 {
-        color: #10b981;
+        color: #10b981 !important;
     }
-    .stRadio label, .stSelectbox label, .stNumberInput label {
+    label[data-testid="stWidgetLabel"] > div {
         font-weight: bold;
         text-transform: uppercase;
-        color: #ffffff;
+        color: #ffffff !important;
     }
     .result-card {
         background-color: #1e293b;
@@ -23,21 +23,21 @@ st.markdown("""
         border-left: 6px solid #10b981;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         margin-bottom: 1.5rem;
-        color: #f1f5f9;
+        color: #f1f5f9 !important;
     }
-    .stButton button {
-        background-color: #10b981;
-        color: white;
+    button[kind="primary"] {
+        background-color: #10b981 !important;
+        color: white !important;
         font-weight: bold;
         border-radius: 10px;
         height: 3em;
         width: 100%;
     }
-    .stButton button:hover {
-        background-color: #059669;
+    button[kind="primary"]:hover {
+        background-color: #059669 !important;
     }
-    .stRadio > div {
-        flex-direction: row;
+    div[data-baseweb="radio"] > div {
+        flex-direction: row !important;
     }
     .info-tooltip {
         display: inline-block;
@@ -70,22 +70,56 @@ st.markdown("""
         z-index: 9999;
         pointer-events: none;
     }
-    .info-tooltip:hover + .custom-tooltip {
+    .tooltip-container:hover .custom-tooltip {
         display: block;
     }
-    .stTooltip {
-        z-index: 9999 !important;
-        overflow: visible !important;
-        white-space: normal !important;
-        max-width: 400px !important;
-    }
-    .st-emotion-cache-1y4p8pa {
-        overflow: visible !important;
+    .tooltip-container {
+        position: relative;
+        display: inline-block;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# --- CALCULATION FUNCTIONS ---
+# Tooltip Text
+tooltip_text = """
+<table style='width:100%; font-size: 0.85em;'>
+  <tr><td style='color:#10b981; font-weight:bold;'>SEDENTARY</td><td>Very little or no intentional exercise.</td></tr>
+  <tr><td style='color:#10b981; font-weight:bold;'>LIGHTLY ACTIVE</td><td>Yoga, stretching, brisk walk (45-60 min).</td></tr>
+  <tr><td style='color:#10b981; font-weight:bold;'>MODERATE</td><td>Sports, light weight training (60-90 min).</td></tr>
+  <tr><td style='color:#10b981; font-weight:bold;'>ACTIVE</td><td>Intense training or sports (120–150 min).</td></tr>
+  <tr><td style='color:#10b981; font-weight:bold;'>VERY ACTIVE</td><td>Very intense training (150+ min daily).</td></tr>
+</table>
+"""
+
+# UI
+st.title("Fitness Metrics Calculator")
+
+with st.form("input_form"):
+    st.subheader("👤 Enter Information:")
+    col1, col2 = st.columns(2)
+    with col1:
+        W = st.number_input("Weight (KG)", min_value=1.0)
+        A = st.number_input("Age (Years)", min_value=1)
+    with col2:
+        H = st.number_input("Height (CM)", min_value=1.0)
+        S = st.radio("Sex", ["M", "F"], horizontal=True, format_func=lambda x: x.upper())
+
+    col1, col2 = st.columns([6, 2])
+    with col1:
+        activity_level = st.selectbox("Activity Level", [
+            'SEDENTARY 🛌', 'LIGHT 🧘‍♂️', 'MODERATE 🧖‍♂️', 'ACTIVE 🏃‍♂️', 'VERY ACTIVE 🏋️'])
+    with col2:
+        st.markdown(f"""
+        <div class="tooltip-container">
+            <span class="info-tooltip">?</span>
+            <div class="custom-tooltip">{tooltip_text}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    prog = st.radio("Goal", ['GAIN MASS', 'LOSE FAT'], horizontal=True)
+    submitted = st.form_submit_button("🔍 CALCULATE")
+
+# Functions
 def calc_bmi(W, H):
     return round((W / (H / 100) ** 2), 1)
 
@@ -132,61 +166,7 @@ def calc_macros(W, activity_level):
     C = round(W * carb_multipliers.get(activity_level, 3.5))
     return P, F, C
 
-# --- TOOLTIP TEXT ---
-tooltip_text = """
-<table style='width:100%; font-size: 0.85em;'>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>SEDENTARY</td>
-    <td>Very little or no intentional exercise (Basically just lying around, watching TV and basic household chores).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>LIGHTLY ACTIVE</td>
-    <td>Light physical activities like yoga, basic stretchings, brisk walking 4-5 kmph (45-60 mins).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>MODERATE</td>
-    <td>Activities like casual sports, body weight workout, light weight training, jogging at 8-9 kmph (60-90 mins).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>ACTIVE</td>
-    <td>Intense training like weight training, calisthenics, competitive sports (120-150 mins; 3-5 days a week).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>VERY ACTIVE</td>
-    <td>Very intense weight training, intense sports, extremely volumetric workout (150+ mins, 6-7 days a week).</td>
-  </tr>
-</table>
-"""
-
-# --- UI ---
-st.title("Fitness Metrics Calculator")
-
-with st.form("input_form"):
-    st.subheader("👤 Enter Information:")
-    col1, col2 = st.columns(2)
-    with col1:
-        W = st.number_input("Weight (KG)", min_value=1.0)
-        A = st.number_input("Age (Years)", min_value=1)
-    with col2:
-        H = st.number_input("Height (CM)", min_value=1.0)
-        S = st.radio("Sex", ["M", "F"], horizontal=True, format_func=lambda x: x.upper())
-
-    col1, col2 = st.columns([6, 1])
-    with col1:
-        activity_level = st.selectbox("Activity Level", [
-            'SEDENTARY 🛌', 'LIGHT 🧘‍♂️', 'MODERATE 🧖‍♂️', 'ACTIVE 🏃‍♂️', 'VERY ACTIVE 🏋️'])
-    with col2:
-        st.markdown(f"""
-        <div class="tooltip-container">
-            <span class="info-tooltip">?</span>
-            <div class="custom-tooltip">{tooltip_text}</div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    prog = st.radio("Goal", ['GAIN MASS', 'LOSE FAT'], horizontal=True)
-    submitted = st.form_submit_button("🔍 CALCULATE")
-
-# --- RESULTS ---
+# Output
 if submitted:
     bmi = calc_bmi(W, H)
     bmr = calc_bmr(W, H, A, S)
@@ -207,24 +187,24 @@ if submitted:
     with st.expander("🍱 MACRONUTRIENTS (Based on Activity)"):
         st.markdown(f"""
         <div class="result-card">
-            <strong>PROTEIN:</strong> {protein} g  
-            <br><strong>FATS:</strong> {fats} g  
-            <br><strong>CARBS:</strong> {carbs} g
+            <strong>PROTEIN:</strong> {protein} g<br>
+            <strong>FATS:</strong> {fats} g<br>
+            <strong>CARBS:</strong> {carbs} g
         </div>
         """, unsafe_allow_html=True)
-        
+
     st.success("✅ All values calculated! Adjust your diet accordingly.")
 
-# --- FOOTER ---
+# Credits
 st.markdown("""
 ---
 <div style='text-align: center; padding-top: 20px;'>
     <p style='color:#94a3b8;'>Developed by <strong>Divyesh Kulshreshtha</strong></p>
     <a href='https://github.com/DivyeshK-09' target='_blank' style='margin-right:15px;'>
-        <img src='https://cdn-icons-png.flaticon.com/512/733/733553.png' width='30' style='vertical-align: middle;' title='GitHub Profile'/>
+        <img src='https://cdn-icons-png.flaticon.com/512/733/733553.png' width='30' title='GitHub Profile'/>
     </a>
     <a href='mailto:divyesh.kulshreshtha.09@gmail.com'>
-        <img src='https://cdn-icons-png.flaticon.com/512/732/732200.png' width='30' style='vertical-align: middle;' title='Email'/>
+        <img src='https://cdn-icons-png.flaticon.com/512/732/732200.png' width='30' title='Email'/>
     </a>
 </div>
 """, unsafe_allow_html=True)
