@@ -7,6 +7,7 @@ st.markdown("""
         background-color: #0f172a;
         color: #f1f5f9;
         font-family: 'Segoe UI', sans-serif;
+        overflow: visible !important;
     }
     h1, h2, h3 {
         color: #10b981 !important;
@@ -40,9 +41,10 @@ st.markdown("""
         flex-direction: row !important;
     }
     .tooltip-wrapper {
-        display: inline-block;
         position: relative;
+        display: inline-block;
         margin-top: 2.4em;
+        overflow: visible !important;
     }
     .tooltip-button {
         width: 1.5em;
@@ -55,26 +57,28 @@ st.markdown("""
         line-height: 1.5em;
         cursor: pointer;
         border: none;
-        position: relative;
-        z-index: 10;
+        z-index: 9999 !important;
     }
     .tooltip-box {
         display: none;
         position: absolute;
         top: 2.5em;
-        right: -8em;
+        left: -300px;
         background-color: #1e293b;
         border: 1px solid #10b981;
         color: #f1f5f9;
         padding: 12px;
         border-radius: 10px;
         width: 320px;
-        z-index: 10000;
+        z-index: 99999 !important;
         font-size: 0.85em;
         white-space: normal;
     }
     .tooltip-wrapper:hover .tooltip-box {
         display: block;
+    }
+    .block-container {
+        overflow: visible !important;
     }
     </style>
 """, unsafe_allow_html=True)
