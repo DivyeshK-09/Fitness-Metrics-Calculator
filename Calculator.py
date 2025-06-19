@@ -39,43 +39,42 @@ st.markdown("""
     div[data-baseweb="radio"] > div {
         flex-direction: row !important;
     }
-    .info-tooltip {
+    .tooltip-wrapper {
         display: inline-block;
         position: relative;
-        cursor: help;
-        font-size: 1em;
+        margin-top: 2.4em;
+    }
+    .tooltip-button {
         width: 1.5em;
         height: 1.5em;
+        border-radius: 50%;
         background: #f1f5f9;
         color: #0f172a;
-        border-radius: 50%;
+        font-weight: bold;
         text-align: center;
         line-height: 1.5em;
-        font-weight: bold;
-        margin-top: 2.3em;
-        z-index: 5;
+        cursor: pointer;
+        border: none;
+        position: relative;
+        z-index: 10;
     }
-    .custom-tooltip {
+    .tooltip-box {
         display: none;
         position: absolute;
-        left: -220px;
-        top: 35px;
-        width: 340px;
-        background: #1e293b;
+        top: 2.5em;
+        right: -8em;
+        background-color: #1e293b;
+        border: 1px solid #10b981;
         color: #f1f5f9;
         padding: 12px;
         border-radius: 10px;
-        border: 1px solid #10b981;
-        font-size: 0.8em;
-        z-index: 9999;
-        pointer-events: none;
+        width: 320px;
+        z-index: 10000;
+        font-size: 0.85em;
+        white-space: normal;
     }
-    .tooltip-container:hover .custom-tooltip {
+    .tooltip-wrapper:hover .tooltip-box {
         display: block;
-    }
-    .tooltip-container {
-        position: relative;
-        display: inline-block;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -110,9 +109,9 @@ with st.form("input_form"):
             'SEDENTARY 🛌', 'LIGHT 🧘‍♂️', 'MODERATE 🧖‍♂️', 'ACTIVE 🏃‍♂️', 'VERY ACTIVE 🏋️'])
     with col2:
         st.markdown(f"""
-        <div class="tooltip-container">
-            <span class="info-tooltip">?</span>
-            <div class="custom-tooltip">{tooltip_text}</div>
+        <div class='tooltip-wrapper'>
+            <div class='tooltip-button'>?</div>
+            <div class='tooltip-box'>{tooltip_text}</div>
         </div>
         """, unsafe_allow_html=True)
 
