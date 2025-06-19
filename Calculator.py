@@ -1,6 +1,6 @@
 import streamlit as st
 
-# Styling
+# --- DARK MODE + TOOLTIP PATCH STYLING ---
 st.markdown("""
     <style>
     .stApp {
@@ -53,24 +53,8 @@ st.markdown("""
         line-height: 1.5em;
         font-weight: bold;
         margin-top: 2.3em;
-    }
-    .info-tooltip {
-        display: inline-block;
-        position: relative;
-        cursor: help;
-        font-size: 1em;
-        width: 1.5em;
-        height: 1.5em;
-        background: #f1f5f9;
-        color: #0f172a;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 1.5em;
-        font-weight: bold;
-        margin-top: 2.3em;
         z-index: 5;
     }
-
     .custom-tooltip {
         display: none;
         position: absolute;
@@ -83,18 +67,25 @@ st.markdown("""
         border-radius: 10px;
         border: 1px solid #10b981;
         font-size: 0.8em;
-        z-index: 100;
+        z-index: 9999;
         pointer-events: none;
     }
-
     .info-tooltip:hover + .custom-tooltip {
         display: block;
     }
-
+    .stTooltip {
+        z-index: 9999 !important;
+        overflow: visible !important;
+        white-space: normal !important;
+        max-width: 400px !important;
+    }
+    .st-emotion-cache-1y4p8pa {
+        overflow: visible !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Functions
+# --- CALCULATION FUNCTIONS ---
 def calc_bmi(W, H):
     return round((W / (H / 100) ** 2), 1)
 
@@ -106,7 +97,7 @@ def calc_rmr(W, H, A, S):
 
 def calc_mc(bmr, activity_level):
     activity = {
-        'SEDENTARY 🏋️': 1.2,
+        'SEDENTARY 🛌': 1.2,
         'LIGHT 🧘‍♂️': 1.375,
         'MODERATE 🧖‍♂️': 1.55,
         'ACTIVE 🏃‍♂️': 1.725,
@@ -116,21 +107,21 @@ def calc_mc(bmr, activity_level):
 
 def calc_macros(W, activity_level):
     protein_multipliers = {
-        'SEDENTARY 🏋️': 0.8,
+        'SEDENTARY 🛌': 0.8,
         'LIGHT 🧘‍♂️': 0.8,
         'MODERATE 🧖‍♂️': 1.2,
         'ACTIVE 🏃‍♂️': 1.7,
         'VERY ACTIVE 🏋️': 2
     }
     fat_multipliers = {
-        'SEDENTARY 🏋️': 0.35,
+        'SEDENTARY 🛌': 0.35,
         'LIGHT 🧘‍♂️': 0.35,
         'MODERATE 🧖‍♂️': 0.55,
         'ACTIVE 🏃‍♂️': 0.8,
         'VERY ACTIVE 🏋️': 1.0
     }
     carb_multipliers = {
-        'SEDENTARY 🏋️': 3.5,
+        'SEDENTARY 🛌': 3.5,
         'LIGHT 🧘‍♂️': 3.5,
         'MODERATE 🧖‍♂️': 4.25,
         'ACTIVE 🏃‍♂️': 4.85,
@@ -141,7 +132,7 @@ def calc_macros(W, activity_level):
     C = round(W * carb_multipliers.get(activity_level, 3.5))
     return P, F, C
 
-# Hover-Icon's Contents
+# --- TOOLTIP TEXT ---
 tooltip_text = """
 <table style='width:100%; font-size: 0.85em;'>
   <tr>
@@ -167,7 +158,7 @@ tooltip_text = """
 </table>
 """
 
-# UI
+# --- UI ---
 st.title("Fitness Metrics Calculator")
 
 with st.form("input_form"):
@@ -190,12 +181,12 @@ with st.form("input_form"):
             <span class="info-tooltip">?</span>
             <div class="custom-tooltip">{tooltip_text}</div>
         </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
     prog = st.radio("Goal", ['GAIN MASS', 'LOSE FAT'], horizontal=True)
     submitted = st.form_submit_button("🔍 CALCULATE")
 
-# Metrics
+# --- RESULTS ---
 if submitted:
     bmi = calc_bmi(W, H)
     bmr = calc_bmr(W, H, A, S)
@@ -218,13 +209,13 @@ if submitted:
         <div class="result-card">
             <strong>PROTEIN:</strong> {protein} g  
             <br><strong>FATS:</strong> {fats} g  
-            <br><strong>CARBOHYDRATES:</strong> {carbs} g
+            <br><strong>CARBS:</strong> {carbs} g
         </div>
         """, unsafe_allow_html=True)
         
     st.success("✅ All values calculated! Adjust your diet accordingly.")
 
-# Credits
+# --- FOOTER ---
 st.markdown("""
 ---
 <div style='text-align: center; padding-top: 20px;'>
