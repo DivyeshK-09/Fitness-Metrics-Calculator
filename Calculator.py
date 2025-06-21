@@ -17,6 +17,11 @@ st.markdown("""
         font-weight: bold;
         text-transform: uppercase;
         color: #ffffff;
+        margin-bottom: 0.2rem !important;
+    }
+    .stSelectbox > div {
+        padding-top: 0.1rem !important;
+        padding-bottom: 0.1rem !important;
     }
     .result-card {
         background-color: #1e293b;
@@ -40,49 +45,6 @@ st.markdown("""
     }
     .stRadio > div {
         flex-direction: row;
-    }
-    .info-tooltip {
-        display: inline-block;
-        position: relative;
-        cursor: help;
-        font-size: 1em;
-        width: 1.5em;
-        height: 1.5em;
-        background: #f1f5f9;
-        color: #0f172a;
-        border-radius: 50%;
-        text-align: center;
-        line-height: 1.5em;
-        font-weight: bold;
-        margin-top: 2.3em;
-        z-index: 5;
-    }
-    .custom-tooltip {
-        display: none;
-        position: absolute;
-        left: -220px;
-        top: 35px;
-        width: 340px;
-        background: #1e293b;
-        color: #f1f5f9;
-        padding: 12px;
-        border-radius: 10px;
-        border: 1px solid #10b981;
-        font-size: 0.8em;
-        z-index: 100;
-        pointer-events: none;
-    }
-    .info-tooltip:hover + .custom-tooltip {
-        display: block;
-    }
-    .stTooltip {
-        z-index: 9999 !important;
-        overflow: visible !important;
-        white-space: normal !important;
-        max-width: 400px !important;
-    }
-    .st-emotion-cache-1y4p8pa {
-        overflow: visible !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -134,36 +96,47 @@ def calc_macros(W, activity_level):
     C = round(W * carb_multipliers.get(activity_level, 3.5))
     return P, F, C
 
+def clean(text):
+    return text.encode("ascii", "ignore").decode()
+
 tooltip_text = """
-<table style='width:100%; font-size: 0.85em;'>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>SEDENTARY</td>
-    <td>Very little or no intentional exercise (Basically just lying around, watching TV and basic household chores).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>LIGHTLY ACTIVE</td>
-    <td>Light physical activities like yoga, basic stretchings, brisk walking 4-5 kmph (45-60 mins).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>MODERATE</td>
-    <td>Activities like casual sports, body weight workout, light weight training, jogging at 8-9 kmph (60-90 mins).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>ACTIVE</td>
-    <td>Intense training like weight training, calisthenics, competitive sports (120-150 mins; 3-5 days a week).</td>
-  </tr>
-  <tr>
-    <td style='color:#10b981; font-weight:bold;'>VERY ACTIVE</td>
-    <td>Very intense weight training, intense sports, extremely volumetric workout (150+ mins, 6-7 days a week).</td>
-  </tr>
+<table style='width:100%; border-collapse: collapse; font-size: 0.9em;'>
+  <thead>
+    <tr style='background-color: #10b981; color: #0f172a;'>
+      <th style='padding: 10px;'>ACTIVITY LEVEL</th>
+      <th style='padding: 10px;'>DESCRIPTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr style='background-color: #1e293b;'>
+      <td style='color: #10b981; font-weight: bold;'>SEDENTARY</td>
+      <td>Little or no exercise (TV, rest, chores).</td>
+    </tr>
+    <tr style='background-color: #273549;'>
+      <td style='color: #10b981; font-weight: bold;'>LIGHTLY ACTIVE</td>
+      <td>Yoga, walking 4–5 kmph, 45–60 mins.</td>
+    </tr>
+    <tr style='background-color: #1e293b;'>
+      <td style='color: #10b981; font-weight: bold;'>MODERATE</td>
+      <td>Bodyweight, jogging, 60–90 mins.</td>
+    </tr>
+    <tr style='background-color: #273549;'>
+      <td style='color: #10b981; font-weight: bold;'>ACTIVE</td>
+      <td>Weight training, sports, 120–150 mins.</td>
+    </tr>
+    <tr style='background-color: #1e293b;'>
+      <td style='color: #10b981; font-weight: bold;'>VERY ACTIVE</td>
+      <td>Intense training, 150+ mins, 6–7×/week.</td>
+    </tr>
+  </tbody>
 </table>
 """
 
 # --- UI ---
-st.title("Fitness Metrics Calculator")
+st.title("🏋️‍♂️ Fitness Metrics Calculator")
 
 with st.form("input_form"):
-    st.subheader("👤 Enter Information:")
+    st.subheader("👤 Enter Personal Info")
     name = st.text_input("Name").strip().title()
     col1, col2 = st.columns(2)
     with col1:
@@ -171,19 +144,15 @@ with st.form("input_form"):
         A = st.number_input("Age (Years)", min_value=1)
     with col2:
         H = st.number_input("Height (CM)", min_value=1.0)
-        S = st.radio("Sex", ["M", "F"], horizontal=True, format_func=lambda x: x.upper())
+        S = st.radio("Sex", ["M", "F"], horizontal=True)
 
-    col1, col2 = st.columns([6, 1])
-    with col1:
-        activity_level = st.selectbox("Activity Level", [
-            'SEDENTARY 🛌', 'LIGHT 🧘‍♂️', 'MODERATE 🧖‍♂️', 'ACTIVE 🏃‍♂️', 'VERY ACTIVE 🏋️'])
-    with col2:
-        st.markdown(f"""
-        <div class="tooltip-container">
-            <span class="info-tooltip">?</span>
-            <div class="custom-tooltip">{tooltip_text}</div>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown("#### 🏃‍♂️ Activity Level")
+    activity_level = st.selectbox("", [
+        'SEDENTARY 🛌', 'LIGHT 🧘‍♂️', 'MODERATE 🧖‍♂️',
+        'ACTIVE 🏃‍♂️', 'VERY ACTIVE 🏋️'
+    ])
+    with st.expander("🛈 Activity Info", expanded=False):
+        st.markdown(tooltip_text, unsafe_allow_html=True)
 
     prog = st.radio("Goal", ['GAIN MASS', 'LOSE FAT'], horizontal=True)
     submitted = st.form_submit_button("🔍 CALCULATE")
@@ -194,7 +163,7 @@ if submitted and name:
     bmr = calc_bmr(W, H, A, S)
     rmr = calc_rmr(W, H, A, S)
     mc = calc_mc(bmr, activity_level)
-    suggested_cal = mc + 500 if "GAIN" in prog else mc - 500
+    target_cal = mc + 500 if "GAIN" in prog else mc - 500
     protein, fats, carbs = calc_macros(W, activity_level)
 
     st.subheader("📊 Results")
@@ -203,26 +172,24 @@ if submitted and name:
     <div class="result-card"><h3>🔥 BMR:</h3><p>{round(bmr)} kcal/day</p></div>
     <div class="result-card"><h3>🛌 RMR:</h3><p>{round(rmr)} kcal/day</p></div>
     <div class="result-card"><h3>⚡ MAINTENANCE CALORIES:</h3><p>{round(mc)} kcal/day</p></div>
-    <div class="result-card"><h3>🎯 TARGET CALORIE INTAKE ({prog}):</h3><p>{round(suggested_cal)} kcal/day</p></div>
+    <div class="result-card"><h3>🎯 TARGET CALORIE INTAKE ({prog}):</h3><p>{round(target_cal)} kcal/day</p></div>
     """, unsafe_allow_html=True)
 
-    with st.expander("🍱 TARGET MACRONUTRIENTS PER DAY (Based on Activity)"):
+    with st.expander("🍱 TARGET MACRONUTRIENTS PER DAY"):
         st.markdown(f"""
         <div class="result-card">
-            <strong>PROTEIN:</strong> {protein} g<br>
-            <strong>FATS:</strong> {fats} g<br>
-            <strong>CARBOHYDRATES:</strong> {carbs} g
+            <strong>Protein:</strong> {protein} g<br>
+            <strong>Fats:</strong> {fats} g<br>
+            <strong>Carbohydrates:</strong> {carbs} g
         </div>
         """, unsafe_allow_html=True)
 
     # --- PDF GENERATION ---
-    def clean(txt): return txt.encode("ascii", "ignore").decode()
-
     class PDF(FPDF):
         def header(self):
             self.set_font("Arial", "B", 14)
             self.set_text_color(16, 185, 129)
-            self.cell(0, 10, f"{name}'s Fitness Report", ln=True, align="C")
+            self.cell(0, 10, f"{clean(name)}'s Fitness Report", ln=True, align="C")
 
         def add_section(self, title, content):
             self.set_font("Arial", "B", 12)
@@ -231,18 +198,18 @@ if submitted and name:
             self.cell(0, 10, title, ln=True, fill=True)
             self.set_font("Arial", "", 11)
             self.set_text_color(0)
-            self.multi_cell(0, 10, content)
+            self.multi_cell(0, 10, clean(content))
             self.ln()
 
     pdf = PDF()
     pdf.add_page()
     pdf.set_auto_page_break(auto=True, margin=15)
 
-    pdf.add_section("Personal Info", f"Name: {name}\nWeight: {W} kg\nHeight: {H} cm\nAge: {A} yrs\nSex: {S}\nActivity Level: {clean(activity_level)}\nGoal: {clean(prog)}")
-    pdf.add_section("Results", f"BMI: {bmi}\nBMR: {round(bmr)} kcal/day\nRMR: {round(rmr)} kcal/day\nMaintenance Calories: {round(mc)} kcal/day\nTarget Calorie Intake: {round(suggested_cal)} kcal/day")
-    pdf.add_section("Target Macronutrients Per Day", f"Protein: {protein} g\nFats: {fats} g\nCarbs: {carbs} g")
+    pdf.add_section("Personal Info", f"Name: {name}\nWeight: {W} kg\nHeight: {H} cm\nAge: {A} yrs\nSex: {S}\nActivity Level: {activity_level}\nGoal: {prog}")
+    pdf.add_section("Results", f"BMI: {bmi}\nBMR: {round(bmr)} kcal/day\nRMR: {round(rmr)} kcal/day\nMaintenance Calories: {round(mc)} kcal/day\nTarget Calorie Intake: {round(target_cal)} kcal/day")
+    pdf.add_section("Target Macros", f"Protein: {protein} g\nFats: {fats} g\nCarbs: {carbs} g")
 
-    pdf_bytes = pdf.output(dest="S").encode("latin-1")
+    pdf_bytes = pdf.output(dest="S").encode("latin-1", errors="ignore")
     pdf_output = BytesIO(pdf_bytes)
 
     st.download_button(
