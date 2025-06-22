@@ -1,6 +1,2 @@
-fpdf
-streamlit
-bytesio
-matplotlib
-numpy
-pandas
+fpdf==1.7.2
+streamlit>=1.24
