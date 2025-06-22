@@ -138,12 +138,49 @@ st.title("🏋️‍♂️ Fitness Metrics Calculator")
 with st.form("input_form"):
     st.subheader("👤 Enter Personal Info")
     name = st.text_input("Name").strip().title()
+
     col1, col2 = st.columns(2)
+
+    # --- Weight Section ---
     with col1:
-        W = st.number_input("Weight (KG)", min_value=1.0)
+        st.markdown("**Weight**")
+        weight_col_input, weight_col_unit = st.columns([4, 1])
+        with weight_col_input:
+            W_raw = st.number_input(" ", min_value=1.0, key="weight_input", label_visibility="collapsed")
+        with weight_col_unit:
+            weight_unit = st.selectbox(" ", ["kg", "lbs", "st", "oz"], index = 0,  key="weight_unit", label_visibility="collapsed")
+
+        # Convert weight to kg
+        if weight_unit == "pounds":
+            W = W_raw * 0.453592
+        elif weight_unit == "stones":
+            W = W_raw * 6.35029
+        elif weight_unit == "ounces":
+            W = W_raw * 0.0283495
+        else:
+            W = W_raw
+
         A = st.number_input("Age (Years)", min_value=1)
+
+    # --- Height Section ---
     with col2:
-        H = st.number_input("Height (CM)", min_value=1.0)
+        st.markdown("**Height**")
+        height_col_input, height_col_unit = st.columns([4, 1])
+        with height_col_input:
+            H_raw = st.number_input(" ", min_value=1.0, key="height_input", label_visibility="collapsed")
+        with height_col_unit:
+            height_unit = st.selectbox(" ", ["cm", "m", "ft"], index = 0, key="height_unit", label_visibility="collapsed")
+
+        # Convert height to cm
+        if height_unit == "feet+inches":
+            ft = st.number_input("Feet", min_value=0.0)
+            inch = st.number_input("Inches", min_value=0.0)
+            H = ft * 30.48 + inch * 2.54
+        elif height_unit == "meters":
+            H = H_raw * 100
+        else:
+            H = H_raw
+
         S = st.radio("Sex", ["M", "F"], horizontal=True)
 
     st.markdown("#### 🏃‍♂️ Activity Level")
@@ -156,6 +193,7 @@ with st.form("input_form"):
 
     prog = st.radio("Goal", ['GAIN MASS', 'LOSE FAT'], horizontal=True)
     submitted = st.form_submit_button("🔍 CALCULATE")
+
 
 # --- RESULTS ---
 if submitted and name:
