@@ -116,7 +116,7 @@ with st.form("input_form"):
         st.markdown("**Weight**")
         wc1, wc2 = st.columns([2.5, 1])
         with wc1:
-            W_raw = st.number_input(" ", min_value=1.0, key="weight_input", label_visibility="collapsed")
+            W_raw = st.number_input(" ", key="weight_input", label_visibility="collapsed")
         with wc2:
             weight_unit = st.selectbox(" ", ["kg", "lbs", "st", "oz"], index=0, key="weight_unit", label_visibility="collapsed")
         A = st.number_input("Age (Years)", min_value=1)
@@ -125,7 +125,7 @@ with st.form("input_form"):
         st.markdown("**Height**")
         hc1, hc2 = st.columns([2.5, 1])
         with hc1:
-            height_input = st.text_input(" ", key="height_input", label_visibility="collapsed")
+            height_input = st.text_input(" ", placeholder = "e.g.- 180/ 1.8/ 5'11", key="height_input", label_visibility="collapsed")
         with hc2:
             height_unit = st.selectbox(" ", ["cm", "m", "ft"], index=0, key="height_unit", label_visibility="collapsed")
         S = st.radio("Sex", ["M", "F"], horizontal=True)
