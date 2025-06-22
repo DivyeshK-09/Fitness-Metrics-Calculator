@@ -118,7 +118,7 @@ with st.form("input_form"):
         with wc1:
             W_raw = st.number_input(" ", min_value=1.0, key="weight_input", label_visibility="collapsed")
         with wc2:
-            weight_unit = st.selectbox(" ", ["kg", "pounds", "stones", "ounces"], index=0, key="weight_unit", label_visibility="collapsed")
+            weight_unit = st.selectbox(" ", ["kg", "lbs", "st", "oz"], index=0, key="weight_unit", label_visibility="collapsed")
         A = st.number_input("Age (Years)", min_value=1)
 
     with col2:
@@ -127,7 +127,7 @@ with st.form("input_form"):
         with hc1:
             height_input = st.text_input(" ", placeholder="e.g. 180 or 5'11.5\"", key="height_input", label_visibility="collapsed")
         with hc2:
-            height_unit = st.selectbox(" ", ["cm", "meters", "feet+inches"], index=0, key="height_unit", label_visibility="collapsed")
+            height_unit = st.selectbox(" ", ["cm", "m", "ft"], index=0, key="height_unit", label_visibility="collapsed")
         S = st.radio("Sex", ["M", "F"], horizontal=True)
 
     st.markdown("#### 🏃‍♂️ Activity Level")
