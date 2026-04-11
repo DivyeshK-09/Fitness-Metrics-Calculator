@@ -87,7 +87,8 @@ st.title("🏋️‍♂️ FITNESS METRICS CALCULATOR")
 
 with st.form("input_form"):
     st.subheader("👤 Enter Personal Info")
-    name = st.text_input("**Name**").strip().title()
+    st.markdown("**Name**")
+    name = st.text_input(" ", key="name_input", label_visibility="collapsed").strip().title()
     col1, col2 = st.columns(2)
 
     with col1:
@@ -115,7 +116,8 @@ with st.form("input_form"):
     with st.expander("🛈 Activity Info", expanded=False):
         st.markdown(tooltip_text, unsafe_allow_html=True)
 
-    prog = st.radio("**Goal**", ['GAIN MASS', 'MAINTAIN', 'LOSE FAT'], horizontal=True)
+    st.markdown("**Goal**")
+    prog = st.radio(" ", ['GAIN MASS', 'MAINTAIN', 'LOSE FAT'], horizontal=True, label_visibility="collapsed")
     submitted = st.form_submit_button("🔍 CALCULATE")
 
 if submitted and name:
