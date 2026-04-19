@@ -111,7 +111,7 @@ def calc_macros(W, target_cal, activity_level, prog):
         'LIGHT 🧘‍♂️':      0.8,
         'MODERATE 🧖‍♂️':   1.2,
         'ACTIVE 🏃‍♂️':     1.75,
-        'VERY ACTIVE 🏋️': 2.1
+        'VERY ACTIVE 🏋️': 2.0
     }
 
     protein_maintain = {
@@ -119,15 +119,15 @@ def calc_macros(W, target_cal, activity_level, prog):
         'LIGHT 🧘‍♂️':      0.95,
         'MODERATE 🧖‍♂️':   1.25,
         'ACTIVE 🏃‍♂️':     1.95,
-        'VERY ACTIVE 🏋️': 2.15
+        'VERY ACTIVE 🏋️': 2.05
     }
 
     protein_cut = {
-        'SEDENTARY 🛌':   1.0,
-        'LIGHT 🧘‍♂️':      1.2,
-        'MODERATE 🧖‍♂️':   1.5,
-        'ACTIVE 🏃‍♂️':     2.1,
-        'VERY ACTIVE 🏋️': 2.3
+        'SEDENTARY 🛌':   1.05,
+        'LIGHT 🧘‍♂️':      1.25,
+        'MODERATE 🧖‍♂️':   1.55,
+        'ACTIVE 🏃‍♂️':     2.0,
+        'VERY ACTIVE 🏋️': 2.25
     }
 
     if "LOSE" in prog:
