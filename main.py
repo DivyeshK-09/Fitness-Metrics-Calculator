@@ -108,9 +108,9 @@ def calc_macros(W, target_cal, activity_level, prog):
 
     protein_bulk = {
         'SEDENTARY 🛌':   0.8,
-        'LIGHT 🧘‍♂️':      0.8,
-        'MODERATE 🧖‍♂️':   1.2,
-        'ACTIVE 🏃‍♂️':     1.75,
+        'LIGHT 🧘‍♂️':      1.0,
+        'MODERATE 🧖‍♂️':   1.35,
+        'ACTIVE 🏃‍♂️':     1.8,
         'VERY ACTIVE 🏋️': 2.0
     }
 
@@ -118,15 +118,15 @@ def calc_macros(W, target_cal, activity_level, prog):
         'SEDENTARY 🛌':   0.8,
         'LIGHT 🧘‍♂️':      0.95,
         'MODERATE 🧖‍♂️':   1.25,
-        'ACTIVE 🏃‍♂️':     1.95,
-        'VERY ACTIVE 🏋️': 2.05
+        'ACTIVE 🏃‍♂️':     1.975,
+        'VERY ACTIVE 🏋️': 2.075
     }
 
     protein_cut = {
         'SEDENTARY 🛌':   1.05,
         'LIGHT 🧘‍♂️':      1.25,
         'MODERATE 🧖‍♂️':   1.55,
-        'ACTIVE 🏃‍♂️':     2.0,
+        'ACTIVE 🏃‍♂️':     2.1,
         'VERY ACTIVE 🏋️': 2.25
     }
 
