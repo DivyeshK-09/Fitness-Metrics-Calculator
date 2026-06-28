@@ -81,8 +81,8 @@ def calc_mc(rmr, activity_level):
     activity = {
         'SEDENTARY 🛌':   1.2,
         'LIGHT 🧘‍♂️':      1.375,
-        'MODERATE 🧖‍♂️':   1.555,
-        'ACTIVE 🏃‍♂️':     1.75,
+        'MODERATE 🧖‍♂️':   1.55,
+        'ACTIVE 🏃‍♂️':     1.725,
         'VERY ACTIVE 🏋️': 1.975
     }
     return rmr * activity.get(activity_level, 1.2)
@@ -102,32 +102,32 @@ def calc_macros(W, target_cal, activity_level, prog):
         'SEDENTARY 🛌':   1.0,
         'LIGHT 🧘‍♂️':      1.0,
         'MODERATE 🧖‍♂️':   1.0,
-        'ACTIVE 🏃‍♂️':     1.1,
-        'VERY ACTIVE 🏋️': 1.15
+        'ACTIVE 🏃‍♂️':     1.05,
+        'VERY ACTIVE 🏋️': 1.1
     }
 
     protein_bulk = {
         'SEDENTARY 🛌':   0.8,
-        'LIGHT 🧘‍♂️':      1.0,
-        'MODERATE 🧖‍♂️':   1.35,
-        'ACTIVE 🏃‍♂️':     1.8,
-        'VERY ACTIVE 🏋️': 2.0
+        'LIGHT 🧘‍♂️':      0.8,
+        'MODERATE 🧖‍♂️':   1.2,
+        'ACTIVE 🏃‍♂️':     1.4,
+        'VERY ACTIVE 🏋️': 1.7
     }
 
     protein_maintain = {
-        'SEDENTARY 🛌':   0.8,
-        'LIGHT 🧘‍♂️':      0.95,
-        'MODERATE 🧖‍♂️':   1.25,
-        'ACTIVE 🏃‍♂️':     1.975,
-        'VERY ACTIVE 🏋️': 2.075
+        'SEDENTARY 🛌':   0.9,
+        'LIGHT 🧘‍♂️':      1.1,
+        'MODERATE 🧖‍♂️':   1.4,
+        'ACTIVE 🏃‍♂️':     1.65,
+        'VERY ACTIVE 🏋️': 1.9
     }
 
     protein_cut = {
-        'SEDENTARY 🛌':   1.05,
+        'SEDENTARY 🛌':   1.0,
         'LIGHT 🧘‍♂️':      1.25,
-        'MODERATE 🧖‍♂️':   1.55,
-        'ACTIVE 🏃‍♂️':     2.1,
-        'VERY ACTIVE 🏋️': 2.25
+        'MODERATE 🧖‍♂️':   1.5,
+        'ACTIVE 🏃‍♂️':     1.75,
+        'VERY ACTIVE 🏋️': 2.0
     }
 
     if "LOSE" in prog:
