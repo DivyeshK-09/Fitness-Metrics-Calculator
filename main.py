@@ -80,7 +80,7 @@ def calc_mc(rmr, activity_level):
     """
     activity = {
         'SEDENTARY 🛌':   1.2,
-        'LIGHT 🧘‍♂️':      1.375,
+        'LIGHTLY ACTIVE 🧘‍♂️': 1.375,
         'MODERATE 🧖‍♂️':   1.55,
         'ACTIVE 🏃‍♂️':     1.725,
         'VERY ACTIVE 🏋️': 1.975
