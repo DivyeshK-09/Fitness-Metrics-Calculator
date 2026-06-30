@@ -6,7 +6,7 @@ A research-backed, science-driven fitness metrics web app built with **Streamlit
 
 ## 🌐 Live App
 
-> https://fitness-metrics-calculator-rghstm8.streamlit.app/
+> https://fitness-metrics-calculator-8v34fqdgbxegp6mzxgbh7v.streamlit.app/
 
 ---
 
