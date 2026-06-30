@@ -192,7 +192,7 @@ def calc_micros(S, A, activity_level):
     # --- ACTIVITY MULTIPLIERS ---
     activity_bumps = {
         'SEDENTARY 🛌':   {'vit_c': 1.0,  'vit_d': 1.0,  'iron': 1.0,  'magnesium': 1.0,  'zinc': 1.0,  'vit_b1': 1.0,  'vit_b2': 1.0,  'vit_b3': 1.0,  'vit_b6': 1.0,  'potassium': 1.0,  'sodium': 1.0 },
-        'LIGHT 🧘‍♂️':      {'vit_c': 1.25, 'vit_d': 1.0,  'iron': 1.0,  'magnesium': 1.0,  'zinc': 1.0,  'vit_b1': 1.1,  'vit_b2': 1.1,  'vit_b3': 1.1,  'vit_b6': 1.1,  'potassium': 1.0,  'sodium': 1.0 },
+        'LIGHTLY ACTIVE 🧘‍♂️':      {'vit_c': 1.25, 'vit_d': 1.0,  'iron': 1.0,  'magnesium': 1.0,  'zinc': 1.0,  'vit_b1': 1.1,  'vit_b2': 1.1,  'vit_b3': 1.1,  'vit_b6': 1.1,  'potassium': 1.0,  'sodium': 1.0 },
         'MODERATE 🧖‍♂️':   {'vit_c': 1.88, 'vit_d': 1.33, 'iron': 1.1,  'magnesium': 1.1,  'zinc': 1.1,  'vit_b1': 1.15, 'vit_b2': 1.15, 'vit_b3': 1.15, 'vit_b6': 1.15, 'potassium': 1.06, 'sodium': 1.15 },
         'ACTIVE 🏃‍♂️':     {'vit_c': 2.5,  'vit_d': 1.67, 'iron': 1.15, 'magnesium': 1.15, 'zinc': 1.15, 'vit_b1': 1.2,  'vit_b2': 1.2,  'vit_b3': 1.2,  'vit_b6': 1.2,  'potassium': 1.14, 'sodium': 1.25 },
         'VERY ACTIVE 🏋️': {'vit_c': 3.75, 'vit_d': 1.67, 'iron': 1.2,  'magnesium': 1.2,  'zinc': 1.2,  'vit_b1': 1.25, 'vit_b2': 1.25, 'vit_b3': 1.25, 'vit_b6': 1.25, 'potassium': 1.29, 'sodium': 1.5  },
